@@ -11,18 +11,18 @@
   body {
     background: #0a0d12;
     font-family: 'Space Grotesk', sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 40px 20px;
+    padding: 0;
   }
 
   .card {
-    width: 760px;
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    box-sizing: border-box;
     background: linear-gradient(180deg, #0e1218 0%, #0a0d12 100%);
-    border: 1px solid #23303d;
-    border-radius: 4px;
-    padding: 40px 44px 36px;
+    padding: 44px clamp(16px, 2vw, 36px) 56px;
     position: relative;
+    min-height: 100vh;
   }
 
   .card::before {
@@ -30,7 +30,6 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    border-radius: 4px 4px 0 0;
     background: linear-gradient(90deg, #0f6e56, #0c447c 50%, #712b13);
     opacity: 0.7;
   }
@@ -38,37 +37,81 @@
   .eyebrow {
     color: #5f9ea8;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 3px;
+    font-size: 11px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   h1 {
     color: #eef2f5;
-    font-size: 30px;
+    font-size: clamp(26px, 3vw, 38px);
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
   }
 
-  h1 span { color: #4fa39a; }
+  h1 span { color: #4fa39a; font-weight: 500; }
 
   .subtitle {
     color: #6b7a88;
     font-size: 13px;
-    margin-top: 6px;
+    margin-top: 8px;
     font-family: 'IBM Plex Mono', monospace;
   }
 
+  .disclaimer {
+    color: #55636f;
+    font-size: 12px;
+    margin-top: 6px;
+    font-style: italic;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .season-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 6px 14px;
+    border: 1px solid #3a5a52;
+    background: rgba(79,163,154,0.08);
+    border-radius: 20px;
+    font-size: 12.5px;
+    color: #a8dcd4;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .season-badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #4fa39a;
+    box-shadow: 0 0 6px rgba(79,163,154,0.8);
+    flex-shrink: 0;
+  }
+
+  .months-wrap {
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    gap: 20px 28px;
+  }
+
+  .month-block {
+    background: #0d1117;
+    border: 1px solid #1a232d;
+    border-radius: 8px;
+    padding: 20px 22px 22px;
+  }
+
   .month-label {
-    margin-top: 28px;
+    margin-top: 0;
     color: #8a99a8;
-    font-size: 13px;
-    letter-spacing: 2px;
+    font-size: 12px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     font-family: 'IBM Plex Mono', monospace;
     border-bottom: 1px solid #1c2733;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
   }
 
   .grid {
@@ -88,15 +131,22 @@
   }
 
   .day {
-    aspect-ratio: 1 / 0.78;
+    height: 62px;
     border: 1px solid #182029;
     border-radius: 3px;
     background: #0d1117;
     padding: 5px 6px;
     position: relative;
+    z-index: 1;
   }
 
+  .day.major-day, .day.dungeon-day { z-index: 1; }
+
+  .day:has(.dot-wrap:hover) { z-index: 100; }
+
   .day.empty { border: none; background: transparent; }
+
+  .day.season-current { border-color: #3a5a52; background: rgba(79,163,154,0.07); }
 
   .day-num {
     color: #4a5764;
@@ -114,40 +164,28 @@
   .day.today { border-color: #4fa39a; box-shadow: inset 0 0 0 1px #4fa39a; }
   .day.today .day-num { color: #7fd4c8; font-weight: 500; }
 
-  .day.event-day { background: #12151d; border-color: #2a3644; }
-
-  .day.major-day {
-    background: #1a1408;
-    border-color: #d9a441;
-    box-shadow: inset 0 0 0 1px #d9a441, 0 0 10px rgba(217,164,65,0.25);
-  }
-  .day.major-day .day-num { color: #f2c568; font-weight: 500; }
-  .day.major-day .day-count { color: #a9843c; }
-
-  .day.dungeon-day {
-    background: #1a1008;
-    border-color: #d85a30;
-    box-shadow: inset 0 0 0 1px #d85a30, 0 0 10px rgba(216,90,48,0.22);
-  }
-  .day.dungeon-day .day-num { color: #e8926c; font-weight: 500; }
-  .day.dungeon-day .day-count { color: #a1502f; }
-
   .dots {
     position: absolute;
-    bottom: 5px; left: 6px;
+    bottom: 5px;
+    left: 0;
+    right: 0;
     display: flex;
-    gap: 3px;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 0;
   }
 
-  .dot-wrap { position: relative; display: inline-flex; }
-  .dot { width: 5px; height: 5px; border-radius: 50%; }
+  .dot-wrap + .dot-wrap { margin-left: 3px; }
+
+  .dot-wrap { position: relative; display: inline-block; width: 5px; height: 5px; line-height: 0; flex-shrink: 0; align-self: flex-end; }
+  .dot { display: block; box-sizing: border-box; width: 5px; height: 5px; border-radius: 1.5px; border: 1px solid rgba(0,0,0,0.6); flex-shrink: 0; }
   .dot-dungeon { background: #d85a30; }
-  .dot-gth { background: #a89fe0; }
-  .dot-mini { background: #7fb3b6; }
+  .dot-gth { background: #5cbf7a; }
+  .dot-mini { background: #45b8d4; }
   .dot-collab { background: #d868a8; }
   .dot-visage { background: #5b7fd4; }
-  .dot-other { background: #6b7a88; }
-  .dot-major { background: #f2c568; box-shadow: 0 0 4px rgba(242,197,104,0.8); }
+  .dot-other { background: #9b7fd4; }
+  .dot-major { background: #f2c568; }
 
   .dot-tooltip {
     position: absolute;
@@ -159,35 +197,61 @@
     border-radius: 4px;
     padding: 10px 12px;
     width: max-content;
-    max-width: 240px;
+    max-width: 270px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition: opacity 0.12s ease;
-    z-index: 30;
+    z-index: 999;
     box-shadow: 0 4px 14px rgba(0,0,0,0.6);
     display: flex;
     flex-direction: column;
     gap: 5px;
+    line-height: normal;
   }
-  .dot-tooltip .item { font-size: 12px; }
+  .dot-tooltip .item { font-size: 12px; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
   .dot-wrap:hover .dot-tooltip { opacity: 1; visibility: visible; }
+
+  .dot-tooltip:has(.item-major) { border-color: #d9a441; }
+  .dot-tooltip:has(.item-dungeon) { border-color: #d85a30; }
+  .dot-tooltip:has(.item-gth) { border-color: #a89fe0; }
+  .dot-tooltip:has(.item-mini) { border-color: #7fb3b6; }
+  .dot-tooltip:has(.item-collab) { border-color: #d868a8; }
+  .dot-tooltip:has(.item-visage) { border-color: #5b7fd4; }
+  .dot-tooltip:has(.item-other) { border-color: #6b7a88; }
 
   .day.event-day, .day.major-day, .day.dungeon-day { cursor: pointer; }
   .day.event-day:hover, .day.major-day:hover, .day.dungeon-day:hover { filter: brightness(1.25); }
 
+  .calendar-layout {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 28px;
+    align-items: start;
+    margin-top: 32px;
+  }
+
   .legend {
-    margin-top: 26px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    border-top: 1px solid #1c2733;
-    border-bottom: 1px solid #1c2733;
-    padding: 16px 0;
+    flex-direction: column;
+    gap: 14px;
+    border: 1px solid #1c2733;
+    border-radius: 8px;
+    padding: 18px 18px;
     position: sticky;
-    top: 0;
-    background: #0b0f14;
-    z-index: 15;
+    top: 20px;
+    background: #0d1117;
+  }
+
+  .legend-title {
+    color: #6b7a88;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1c2733;
+    margin-bottom: 2px;
   }
 
   .legend-item {
@@ -198,21 +262,30 @@
     color: #97a4b0;
   }
 
-  .swatch { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
   .sw-today { background: transparent; border: 1.5px solid #4fa39a; border-radius: 2px; }
   .sw-dungeon { background: #d85a30; }
-  .sw-gth { background: #a89fe0; }
-  .sw-mini { background: #7fb3b6; }
+  .sw-gth { background: #5cbf7a; }
+  .sw-mini { background: #45b8d4; }
   .sw-collab { background: #d868a8; }
   .sw-visage { background: #5b7fd4; }
-  .sw-other { background: #6b7a88; }
+  .sw-other { background: #9b7fd4; }
   .sw-major { background: #f2c568; box-shadow: 0 0 5px rgba(242,197,104,0.8); }
 
+  .details-full-width {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: start;
+    gap: 16px;
+  }
+
   .details {
-    margin-top: 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 10px;
   }
 
   .detail-row {
@@ -224,18 +297,9 @@
     padding-bottom: 1px;
   }
 
-  .detail-row.major {
-    border-left: 2px solid #d9a441;
-    background: linear-gradient(90deg, rgba(217,164,65,0.08), transparent);
-    padding: 6px 10px 6px 14px;
-    border-radius: 3px;
-  }
-
+  .detail-row.major,
   .detail-row.dungeon-tier {
-    border-left: 2px solid #d85a30;
-    background: linear-gradient(90deg, rgba(216,90,48,0.08), transparent);
     padding: 6px 10px 6px 14px;
-    border-radius: 3px;
   }
 
   .detail-date {
@@ -254,22 +318,140 @@
     flex-direction: column;
     gap: 4px;
     flex: 1;
+    min-width: 0;
   }
 
   .item {
     font-size: 13px;
     color: #cdd6de;
     display: flex;
-    gap: 8px;
-    align-items: baseline;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .item-icon-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .detail-items .item {
+    align-items: center;
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+  .detail-items .item-icon-col {
+    width: 92px;
+    align-self: stretch;
+  }
+  .detail-items .item-tag {
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .detail-items .item-info {
+    flex: 1;
+    justify-content: center;
+    align-self: stretch;
+    min-width: 0;
+  }
+  .detail-items .item-line {
+    text-align: left;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .detail-items .dungeon-name {
+    text-align: left;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .detail-items .tier-name,
+  .detail-items .tier-val {
+    min-width: 46px;
+  }
+  .detail-items .tier-list {
+    column-gap: 4px;
+    align-self: flex-start;
+  }
+
+  .detail-items .item-line,
+  .detail-items .dungeon-name {
+    font-size: 13px;
+    font-weight: 600;
+    text-shadow: none;
+    margin: 0;
+  }
+
+  .detail-items .item-major {
+    background: linear-gradient(135deg, rgba(217,164,65,0.16), rgba(217,164,65,0.03));
+  }
+  .detail-items .item-major .item-tag { background: rgba(217,164,65,0.22); color: #f2c568; }
+
+  .detail-items .item-dungeon {
+    background: linear-gradient(135deg, rgba(216,90,48,0.16), rgba(216,90,48,0.03));
+  }
+  .detail-items .item-dungeon .item-tag { background: rgba(216,90,48,0.22); color: #f0a684; }
+
+  .detail-items .item-gth {
+    background: linear-gradient(135deg, rgba(92,191,122,0.16), rgba(92,191,122,0.03));
+  }
+  .detail-items .item-gth .item-tag { background: rgba(92,191,122,0.22); color: #9fdfb4; }
+
+  .detail-items .item-mini {
+    background: linear-gradient(135deg, rgba(69,184,212,0.16), rgba(69,184,212,0.03));
+  }
+  .detail-items .item-mini .item-tag { background: rgba(69,184,212,0.22); color: #9fdcec; }
+
+  .detail-items .item-collab {
+    background: linear-gradient(135deg, rgba(216,104,168,0.16), rgba(216,104,168,0.03));
+  }
+  .detail-items .item-collab .item-tag { background: rgba(216,104,168,0.22); color: #e79fc4; }
+
+  .detail-items .item-visage {
+    background: linear-gradient(135deg, rgba(91,127,212,0.16), rgba(91,127,212,0.03));
+  }
+  .detail-items .item-visage .item-tag { background: rgba(91,127,212,0.22); color: #9fb1ea; }
+
+  .detail-items .item-other {
+    background: linear-gradient(135deg, rgba(155,127,212,0.16), rgba(155,127,212,0.03));
+  }
+  .detail-items .item-other .item-tag { background: rgba(155,127,212,0.22); color: #c8b3ec; }
+
+  .detail-items .item-major .item-line { color: #f2c568; }
+  .detail-items .item-dungeon .dungeon-name { color: #f0a684; }
+  .detail-items .item-gth .item-line { color: #9fdfb4; }
+  .detail-items .item-mini .item-line { color: #9fdcec; }
+  .detail-items .item-collab .item-line { color: #e79fc4; }
+  .detail-items .item-visage .item-line { color: #9fb1ea; }
+  .detail-items .item-other .item-line { color: #c8b3ec; }
+
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .item-sep {
+    border-bottom: 1px solid #1c2733;
+    margin: 6px 0;
+  }
+
+  .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    justify-content: center;
   }
 
   .item-tag {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 9.5px;
+    font-size: 11.6px;
     letter-spacing: 0.4px;
     text-transform: uppercase;
-    padding: 1px 6px;
+    padding: 2px 7px;
     border-radius: 2px;
     flex-shrink: 0;
   }
@@ -278,59 +460,119 @@
     color: #e8926c;
     font-weight: 500;
     font-size: 13.5px;
+  }
+  .item-dungeon .item-tag {
+    background: rgba(216,90,48,0.18);
+    color: #f0a684;
+    font-weight: 400;
+  }
+
+  .dot-tooltip .item-dungeon {
+    background: rgba(216,90,48,0.09);
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin: -10px -12px;
+  }
+  .item-line {
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .item-line + .item-line { margin-top: 4px; }
+
+  .item-major .item-line {
+    color: #f2c568;
+    text-shadow: 0 0 8px rgba(217,164,65,0.65), 0 0 18px rgba(217,164,65,0.35), 0 1px 0 rgba(0,0,0,0.4);
+  }
+  .item-gth .item-line {
+    color: #b9b3e8;
+    text-shadow: 0 0 8px rgba(168,159,224,0.65), 0 0 18px rgba(168,159,224,0.35), 0 1px 0 rgba(0,0,0,0.4);
+  }
+  .item-mini .item-line {
+    color: #9fc9cb;
+    text-shadow: 0 0 8px rgba(127,179,182,0.65), 0 0 18px rgba(127,179,182,0.35), 0 1px 0 rgba(0,0,0,0.4);
+  }
+  .item-collab .item-line {
+    color: #e79fc4;
+    text-shadow: 0 0 8px rgba(216,104,168,0.65), 0 0 18px rgba(216,104,168,0.35), 0 1px 0 rgba(0,0,0,0.4);
+  }
+  .item-visage .item-line {
+    color: #9fb1ea;
+    text-shadow: 0 0 8px rgba(91,127,212,0.65), 0 0 18px rgba(91,127,212,0.35), 0 1px 0 rgba(0,0,0,0.4);
+  }
+  .item-other .item-line {
+    color: #a9b4bd;
+    text-shadow: 0 0 8px rgba(107,122,136,0.65), 0 0 18px rgba(107,122,136,0.35), 0 1px 0 rgba(0,0,0,0.4);
+  }
+
+  .dungeon-name {
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #f4a878;
+    text-shadow: 0 0 8px rgba(216,90,48,0.65), 0 0 18px rgba(216,90,48,0.35), 0 1px 0 rgba(0,0,0,0.4);
+    margin: 0;
+  }
+  .dungeon-block {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    align-items: stretch;
   }
-  .dungeon-title {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-left: 0;
+  .dungeon-block + .dungeon-block {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
-  .dungeon-title .sword { color: #d85a30; margin-right: 2px; font-size: inherit; }
-  .item-dungeon .item-tag { background: rgba(216,90,48,0.18); color: #f0a684; font-weight: 400; }
   .tier-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-left: 0;
-    margin-top: 1px;
+    display: inline-grid;
+    grid-template-columns: 1fr auto 1fr;
+    column-gap: 8px;
+    row-gap: 3px;
+    align-self: center;
+    margin-top: 4px;
   }
-  .tier-row {
-    display: flex;
-    gap: 8px;
+  .tier-name {
+    text-align: left;
+    color: #b98a6f;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
-    font-weight: 400;
-    color: #c9a08a;
+    min-width: 72px;
   }
-  .tier-name { min-width: 76px; color: #b98a6f; }
-  .tier-dash { color: #6b4d3d; }
-  .tier-val { color: #e8926c; font-weight: 500; }
+  .tier-dash {
+    text-align: center;
+    color: #6b4d3d;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+  .tier-val {
+    text-align: right;
+    color: #e8926c;
+    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    min-width: 72px;
+  }
   .item-gth .item-tag { background: rgba(168,159,224,0.15); color: #b9b3e8; }
   .item-mini .item-tag { background: rgba(127,179,182,0.15); color: #9fc9cb; }
   .item-collab .item-tag { background: rgba(216,104,168,0.15); color: #e79fc4; }
   .item-visage .item-tag { background: rgba(91,127,212,0.15); color: #9fb1ea; }
   .item-other { color: #8a99a8; font-size: 12.5px; }
+  .item-other .item-tag { background: rgba(107,122,136,0.18); color: #a9b4bd; }
 
   .item-major {
     color: #f2c568;
     font-weight: 500;
     font-size: 13.5px;
   }
-  .item-major .star { color: #d9a441; margin-right: 2px; }
-
-  .footer {
-    margin-top: 28px;
-    color: #3d4954;
-    font-size: 11px;
-    font-family: 'IBM Plex Mono', monospace;
-    text-align: right;
-  }
+  .item-major .item-tag { background: rgba(217,164,65,0.18); color: #f2c568; }
 
   .season-group {
-    margin-top: 22px;
+    margin-top: 0;
     border: 1px solid #1c2733;
     border-radius: 4px;
     overflow: hidden;
@@ -369,15 +611,241 @@
     0% { box-shadow: 0 0 0 1px #4fa39a, 0 0 16px rgba(79,163,154,0.5); }
     100% { box-shadow: none; }
   }
+
+  @media (max-width: 1300px) {
+    .details-full-width { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 720px) {
+    .calendar-layout { grid-template-columns: 1fr; }
+    .legend { position: static; flex-direction: row; flex-wrap: wrap; }
+    .months-wrap { grid-template-columns: 1fr; }
+    .details-full-width { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
   <div class="card">
     <div class="eyebrow">Sword x Staff</div>
     <h1>Kanstein Timeline <span>— Seasons 1–3</span></h1>
-    <div class="subtitle">Verdantglade → Aethyris · all times EST · Day count from launch (May 19 = Day 1)</div>
+    <div class="subtitle">Verdantglade → Aethyris</div>
+    <div class="disclaimer">All dates are estimated and not confirmed by Boltray; some dates may vary.</div>
+    <div class="season-badge"><span class="season-badge-dot"></span>Currently in: Season 2 — Loong Haven</div>
 
-    <div class="month-label">May 2026</div>
+    <div class="details-full-width">
+      
+    <details class="season-group" >
+      <summary>Preseason — Verdantglade & Cinder Ridge</summary>
+      <div class="details">
+      <div class="detail-row major dungeon-tier" id="detail-1">
+        <div class="detail-date">May 19 · Tue<br><span class="day-tag">Day 1</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Kingdom Unlock: Verdantglade</div></div></div><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Auroradrasil</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">36K</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row major dungeon-tier" id="detail-4">
+        <div class="detail-date">May 22 · Fri<br><span class="day-tag">Day 4</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Kingdom Unlock: Cinder Ridge</div><div class="item-line">Class Advancement: 2nd Job (Lv. 44)</div></div></div><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Mecha Summit</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">180K</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-8">
+        <div class="detail-date">May 26 · Tue<br><span class="day-tag">Day 8</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box - Cinder Ridge</div></div></div></div>
+      </div>
+      </div>
+    </details>
+    <details class="season-group" >
+      <summary>Season 1 — Aqualis</summary>
+      <div class="details">
+      <div class="detail-row major dungeon-tier" id="detail-12">
+        <div class="detail-date">May 30 · Sat<br><span class="day-tag">Day 12</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Season 1 Start</div><div class="item-line">Kingdom Unlock: Aqualis</div><div class="item-line">Class Advancement: 3rd Job (Lv. 82)</div></div></div><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Ocean Palace Ruins</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">580K</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-15">
+        <div class="detail-date">Jun 2 · Tue<br><span class="day-tag">Day 15</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-22">
+        <div class="detail-date">Jun 9 · Tue<br><span class="day-tag">Day 22</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">3rd Job Skill Fragment x180</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-24">
+        <div class="detail-date">Jun 11 · Thu<br><span class="day-tag">Day 24</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Aquaorigin Shrine</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">930K</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">1.45M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">2.05M</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-26">
+        <div class="detail-date">Jun 13 · Sat<br><span class="day-tag">Day 26</span></div>
+        <div class="detail-items"><div class="item item-other"><div class="item-icon-col"><span class="item-tag">Other</span></div><div class="item-info"><div class="item-line">Seasonal Map: Whaleback Island</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-29">
+        <div class="detail-date">Jun 16 · Tue<br><span class="day-tag">Day 29</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-33">
+        <div class="detail-date">Jun 20 · Sat<br><span class="day-tag">Day 33</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Hellhold</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">2.25M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">2.75M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">3.90M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">6.20M</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-36">
+        <div class="detail-date">Jun 23 · Tue<br><span class="day-tag">Day 36</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aqualis</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-43">
+        <div class="detail-date">Jun 30 · Tue<br><span class="day-tag">Day 43</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      </div>
+    </details>
+    <details class="season-group" >
+      <summary>Season 2 — Loong Haven</summary>
+      <div class="details">
+      <div class="detail-row" id="detail-57">
+        <div class="detail-date">Jul 14 · Tue<br><span class="day-tag">Day 57</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-60">
+        <div class="detail-date">Jul 17 · Fri<br><span class="day-tag">Day 60</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Warlord's Rest</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">3.55M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">5.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">6.00M</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-63">
+        <div class="detail-date">Jul 20 · Mon<br><span class="day-tag">Day 63</span></div>
+        <div class="detail-items"><div class="item item-visage"><div class="item-icon-col"><span class="item-tag">Visage</span></div><div class="item-info"><div class="item-line">Bamboo Breeze</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-64">
+        <div class="detail-date">Jul 21 · Tue<br><span class="day-tag">Day 64</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box – Loong Haven</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-70">
+        <div class="detail-date">Jul 27 · Mon<br><span class="day-tag">Day 70</span></div>
+        <div class="detail-items"><div class="item item-collab"><div class="item-icon-col"><span class="item-tag">Collab</span></div><div class="item-info"><div class="item-line">Luo Tianyi Collab - Dimensional Resonance!</div></div></div></div>
+      </div>
+      <div class="detail-row major" id="detail-71">
+        <div class="detail-date">Jul 28 · Tue<br><span class="day-tag">Day 71</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Seasonal Map: The Tower of Babel</div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Fenneck's Puzzle</div></div></div><div class="item item-other"><div class="item-icon-col"><span class="item-tag">Other</span></div><div class="item-info"><div class="item-line">New Skill Chroma</div><div class="item-line">Primal Quartet Event</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-73">
+        <div class="detail-date">Jul 30 · Thu<br><span class="day-tag">Day 73</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Cloudcrest Temple</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">6.20M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">7.70M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">9.80M</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row major" id="detail-78">
+        <div class="detail-date">Aug 4 · Tue<br><span class="day-tag">Day 78</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Loong Haven II - Relics Release</div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">4th Job Skill Fragment x180</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-84">
+        <div class="detail-date">Aug 10 · Mon<br><span class="day-tag">Day 84</span></div>
+        <div class="detail-items"><div class="item item-visage"><div class="item-icon-col"><span class="item-tag">Visage</span></div><div class="item-info"><div class="item-line">Ashen Galaxy</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-85">
+        <div class="detail-date">Aug 11 · Tue<br><span class="day-tag">Day 85</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-86">
+        <div class="detail-date">Aug 12 · Wed<br><span class="day-tag">Day 86</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Bladeshire</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">10.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">12.50M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">15.80M</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row major" id="detail-92">
+        <div class="detail-date">Aug 18 · Tue<br><span class="day-tag">Day 92</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Mythic Fantomon Release: Pandarial</div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box – Loong Haven II</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Fenneck's Puzzle</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-99">
+        <div class="detail-date">Aug 25 · Tue<br><span class="day-tag">Day 99</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Celestial Cloudship</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">16.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">20.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">24.50M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">40.00M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-106">
+        <div class="detail-date">Sep 1 · Tue<br><span class="day-tag">Day 106</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">4th Job Skill Fragment x180</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-113">
+        <div class="detail-date">Sep 8 · Tue<br><span class="day-tag">Day 113</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Fenneck's Puzzle</div></div></div></div>
+      </div>
+      </div>
+    </details>
+    <details class="season-group" >
+      <summary>Season 3 — Aethyris</summary>
+      <div class="details">
+      <div class="detail-row major dungeon-tier" id="detail-114">
+        <div class="detail-date">Sep 9 · Wed<br><span class="day-tag">Day 114</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Season 3 Start</div><div class="item-line">Kingdom Unlock: Aethyris</div><div class="item-line">Class Advancement: 5th Job (Lv. 136)</div></div></div><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Crystal Spiral Tree</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">—</span></div></div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-120">
+        <div class="detail-date">Sep 15 · Tue<br><span class="day-tag">Day 120</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-127">
+        <div class="detail-date">Sep 22 · Tue<br><span class="day-tag">Day 127</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Eternal Flower Garden</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">12.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">15.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">18.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">28.50M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-128">
+        <div class="detail-date">Sep 23 · Wed<br><span class="day-tag">Day 128</span></div>
+        <div class="detail-items"><div class="item item-other"><div class="item-icon-col"><span class="item-tag">Other</span></div><div class="item-info"><div class="item-line">Seasonal Map: Starry Sea Cruise</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-134">
+        <div class="detail-date">Sep 29 · Tue<br><span class="day-tag">Day 134</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">5th Job Skill Fragment x180</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-141">
+        <div class="detail-date">Oct 6 · Tue<br><span class="day-tag">Day 141</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Battle Abyss Fortress</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">20.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">26.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">30.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">46.00M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem / Philosopher's Stone</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row major" id="detail-144">
+        <div class="detail-date">Oct 9 · Fri<br><span class="day-tag">Day 144</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Aethyris Phase 2 Relics Unlock</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-148">
+        <div class="detail-date">Oct 13 · Tue<br><span class="day-tag">Day 148</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris II</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-155">
+        <div class="detail-date">Oct 20 · Tue<br><span class="day-tag">Day 155</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Purification Garden</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">32.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">43.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">50.50M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">75.00M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div></div></div>
+      </div>
+      <div class="detail-row major" id="detail-160">
+        <div class="detail-date">Oct 25 · Sun<br><span class="day-tag">Day 160</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Mythic Fantomon Release: Rainbow Star Spirit</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-162">
+        <div class="detail-date">Oct 27 · Tue<br><span class="day-tag">Day 162</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">5th Job Skill Fragment x180</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-169">
+        <div class="detail-date">Nov 3 · Tue<br><span class="day-tag">Day 169</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Order Temple</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">55.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">65.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">82.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">115.00M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem / Philosopher's Stone</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row major" id="detail-174">
+        <div class="detail-date">Nov 8 · Sun<br><span class="day-tag">Day 174</span></div>
+        <div class="detail-items"><div class="item item-major"><div class="item-icon-col"><span class="item-tag">Major Event</span></div><div class="item-info"><div class="item-line">Aethyris Phase 3 Relics Unlock</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-176">
+        <div class="detail-date">Nov 10 · Tue<br><span class="day-tag">Day 176</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris III</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-183">
+        <div class="detail-date">Nov 17 · Tue<br><span class="day-tag">Day 183</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Blazing Sun Spire</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">84.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">100.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">120.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">180.00M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-190">
+        <div class="detail-date">Nov 24 · Tue<br><span class="day-tag">Day 190</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">5th Job Skill Fragment x180</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-197">
+        <div class="detail-date">Dec 1 · Tue<br><span class="day-tag">Day 197</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Sovereign's Nest</div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">125.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">145.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">180.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">250.00M</span></div></div></div></div><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Primal Gem / Philosopher's Stone</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div></div></div>
+      </div>
+      <div class="detail-row dungeon-tier" id="detail-203">
+        <div class="detail-date">Dec 7 · Mon<br><span class="day-tag">Day 203</span></div>
+        <div class="detail-items"><div class="item item-dungeon"><div class="item-icon-col"><span class="item-tag">Dungeon</span></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Sovereign's Nest</div><div class="tier-list"><span class="tier-name">Abyss</span><span class="tier-dash">—</span><span class="tier-val">350.00M</span></div></div></div></div><div class="item item-other"><div class="item-icon-col"><span class="item-tag">Other</span></div><div class="item-info"><div class="item-line">Final Power Wall</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-204">
+        <div class="detail-date">Dec 8 · Tue<br><span class="day-tag">Day 204</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris III</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Bingo Draw</div></div></div></div>
+      </div>
+      <div class="detail-row" id="detail-211">
+        <div class="detail-date">Dec 15 · Tue<br><span class="day-tag">Day 211</span></div>
+        <div class="detail-items"><div class="item item-gth"><div class="item-icon-col"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div></div><div class="item item-mini"><div class="item-icon-col"><span class="item-tag">Mini Game</span></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div></div></div>
+      </div>
+      </div>
+    </details>
+    </div>
+
+    <div class="calendar-layout">
+      <div class="months-wrap"><div class="month-block"><div class="month-label">May 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
@@ -403,18 +871,18 @@
 <div class="day"><div class="day-num">16</div><div class="day-count">D-2</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">17</div><div class="day-count">D-1</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">18</div><div class="day-count">D0</div><div class="dots"></div></div>
-<div class="day major-day" data-day="1"><div class="day-num">19</div><div class="day-count">D1</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Auroradrasil</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">36K</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Verdantglade</div></div></span></div></div>
+<div class="day major-day" data-day="1"><div class="day-num">19</div><div class="day-count">D1</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Kingdom Unlock: Verdantglade</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Auroradrasil</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">36K</span></div></div></div></div></div></span></div></div>
 <div class="day"><div class="day-num">20</div><div class="day-count">D2</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">21</div><div class="day-count">D3</div><div class="dots"></div></div>
-<div class="day major-day" data-day="4"><div class="day-num">22</div><div class="day-count">D4</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Mecha Summit</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">180K</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Cinder Ridge</div><div class="item item-major"><span class="star">&#9733;</span>Class Advancement: 2nd Job (Lv. 44)</div></div></span></div></div>
+<div class="day major-day" data-day="4"><div class="day-num">22</div><div class="day-count">D4</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Kingdom Unlock: Cinder Ridge</div><div class="item-line">Class Advancement: 2nd Job (Lv. 44)</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Mecha Summit</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">180K</span></div></div></div></div></div></span></div></div>
 <div class="day"><div class="day-num">23</div><div class="day-count">D5</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">24</div><div class="day-count">D6</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">25</div><div class="day-count">D7</div><div class="dots"></div></div>
-<div class="day event-day" data-day="8"><div class="day-num">26</div><div class="day-count">D8</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Cinder Ridge) [choice]</div></div></span></div></div>
+<div class="day event-day" data-day="8"><div class="day-num">26</div><div class="day-count">D8</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box - Cinder Ridge</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">27</div><div class="day-count">D9</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">28</div><div class="day-count">D10</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">29</div><div class="day-count">D11</div><div class="dots"></div></div>
-<div class="day major-day" data-day="12"><div class="day-num">30</div><div class="day-count">D12</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Ocean Palace Ruins</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">580K</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Season 1 Start</div><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Aqualis</div><div class="item item-major"><span class="star">&#9733;</span>Class Advancement: 3rd Job (Lv. 82)</div></div></span></div></div>
+<div class="day major-day" data-day="12"><div class="day-num">30</div><div class="day-count">D12</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Season 1 Start</div><div class="item-line">Kingdom Unlock: Aqualis</div><div class="item-line">Class Advancement: 3rd Job (Lv. 82)</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Ocean Palace Ruins</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">580K</span></div></div></div></div></div></span></div></div>
 <div class="day"><div class="day-num">31</div><div class="day-count">D13</div><div class="dots"></div></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
@@ -422,86 +890,86 @@
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-</div>
-<div class="month-label">June 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">June 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
 <div class="day"><div class="day-num">1</div><div class="day-count">D14</div><div class="dots"></div></div>
-<div class="day event-day" data-day="15"><div class="day-num">2</div><div class="day-count">D15</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day event-day" data-day="15"><div class="day-num">2</div><div class="day-count">D15</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">3</div><div class="day-count">D16</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">4</div><div class="day-count">D17</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">5</div><div class="day-count">D18</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">6</div><div class="day-count">D19</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">7</div><div class="day-count">D20</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">8</div><div class="day-count">D21</div><div class="dots"></div></div>
-<div class="day event-day" data-day="22"><div class="day-num">9</div><div class="day-count">D22</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(3rd Job Skill Fragment x180) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
+<div class="day event-day" data-day="22"><div class="day-num">9</div><div class="day-count">D22</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">3rd Job Skill Fragment x180</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">10</div><div class="day-count">D23</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="24"><div class="day-num">11</div><div class="day-count">D24</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Aquaorigin Shrine - (Lvl 100)</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">930K</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">1.45M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">2.05M</span></div></div></div></div></span></div></div>
+<div class="day dungeon-day" data-day="24"><div class="day-num">11</div><div class="day-count">D24</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Aquaorigin Shrine</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">930K</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">1.45M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">2.05M</span></div></div></div></div></div></span></div></div>
 <div class="day"><div class="day-num">12</div><div class="day-count">D25</div><div class="dots"></div></div>
-<div class="day event-day" data-day="26"><div class="day-num">13</div><div class="day-count">D26</div><div class="dots"><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other">Seasonal Map: Whaleback Island</div></div></span></div></div>
+<div class="day event-day" data-day="26"><div class="day-num">13</div><div class="day-count">D26</div><div class="dots"><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other"><div class="item-header"><span class="item-tag">Other</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Seasonal Map: Whaleback Island</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">14</div><div class="day-count">D27</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">15</div><div class="day-count">D28</div><div class="dots"></div></div>
-<div class="day event-day" data-day="29"><div class="day-num">16</div><div class="day-count">D29</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div></span></div></div>
+<div class="day event-day" data-day="29"><div class="day-num">16</div><div class="day-count">D29</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">17</div><div class="day-count">D30</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">18</div><div class="day-count">D31</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">19</div><div class="day-count">D32</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="33"><div class="day-num">20</div><div class="day-count">D33</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Hellhold</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">2.25M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">2.75M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">3.9M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">6.2M</span></div></div></div></div></span></div></div>
+<div class="day dungeon-day" data-day="33"><div class="day-num">20</div><div class="day-count">D33</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Hellhold</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">2.25M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">2.75M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">3.90M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">6.20M</span></div></div></div></div></div></span></div></div>
 <div class="day"><div class="day-num">21</div><div class="day-count">D34</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">22</div><div class="day-count">D35</div><div class="dots"></div></div>
-<div class="day event-day" data-day="36"><div class="day-num">23</div><div class="day-count">D36</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aqualis) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day event-day" data-day="36"><div class="day-num">23</div><div class="day-count">D36</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aqualis</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">24</div><div class="day-count">D37</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">25</div><div class="day-count">D38</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">26</div><div class="day-count">D39</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">27</div><div class="day-count">D40</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">28</div><div class="day-count">D41</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">29</div><div class="day-count">D42</div><div class="dots"></div></div>
-<div class="day event-day" data-day="43"><div class="day-num">30</div><div class="day-count">D43</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
+<div class="day event-day" data-day="43"><div class="day-num">30</div><div class="day-count">D43</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-</div>
-<div class="month-label">July 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">July 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-<div class="day"><div class="day-num">1</div><div class="day-count">D44</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">2</div><div class="day-count">D45</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">3</div><div class="day-count">D46</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">4</div><div class="day-count">D47</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">5</div><div class="day-count">D48</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">6</div><div class="day-count">D49</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">7</div><div class="day-count">D50</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">8</div><div class="day-count">D51</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">9</div><div class="day-count">D52</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">10</div><div class="day-count">D53</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">11</div><div class="day-count">D54</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">12</div><div class="day-count">D55</div><div class="dots"></div></div>
-<div class="day today"><div class="day-num">13</div><div class="day-count">D56</div><div class="dots"></div></div>
-<div class="day event-day" data-day="57"><div class="day-num">14</div><div class="day-count">D57</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
-<div class="day"><div class="day-num">15</div><div class="day-count">D58</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">16</div><div class="day-count">D59</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="60"><div class="day-num">17</div><div class="day-count">D60</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Warlord's Rest - (Lvl 130)</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">3.55M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">5M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">6M</span></div></div></div></div></span></div></div>
-<div class="day"><div class="day-num">18</div><div class="day-count">D61</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">19</div><div class="day-count">D62</div><div class="dots"></div></div>
-<div class="day event-day" data-day="63"><div class="day-num">20</div><div class="day-count">D63</div><div class="dots"><span class="dot-wrap"><span class="dot dot-visage"></span><div class="dot-tooltip"><div class="item item-visage"><span class="item-tag">Visage</span>Bamboo Breeze</div></div></span></div></div>
-<div class="day event-day" data-day="64"><div class="day-num">21</div><div class="day-count">D64</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box – Loong Haven) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
-<div class="day"><div class="day-num">22</div><div class="day-count">D65</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">23</div><div class="day-count">D66</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">24</div><div class="day-count">D67</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">25</div><div class="day-count">D68</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">26</div><div class="day-count">D69</div><div class="dots"></div></div>
-<div class="day event-day" data-day="70"><div class="day-num">27</div><div class="day-count">D70</div><div class="dots"><span class="dot-wrap"><span class="dot dot-collab"></span><div class="dot-tooltip"><div class="item item-collab"><span class="item-tag">Collaboration</span>Luo Tianyi Collab - Dimensional Resonance!</div></div></span></div></div>
-<div class="day major-day" data-day="71"><div class="day-num">28</div><div class="day-count">D71</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Fenneck's Puzzle</div></div></span><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other">New Skill Chroma</div><div class="item item-other">Primal Quartet Event</div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Seasonal Map: The Tower of Babel</div></div></span></div></div>
-<div class="day"><div class="day-num">29</div><div class="day-count">D72</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="73"><div class="day-num">30</div><div class="day-count">D73</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Cloudcrest Temple</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">6.2M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">7.7M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">9.8M</span></div></div></div></div></span></div></div>
-<div class="day"><div class="day-num">31</div><div class="day-count">D74</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">1</div><div class="day-count">D44</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">2</div><div class="day-count">D45</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">3</div><div class="day-count">D46</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">4</div><div class="day-count">D47</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">5</div><div class="day-count">D48</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">6</div><div class="day-count">D49</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">7</div><div class="day-count">D50</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">8</div><div class="day-count">D51</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">9</div><div class="day-count">D52</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">10</div><div class="day-count">D53</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">11</div><div class="day-count">D54</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">12</div><div class="day-count">D55</div><div class="dots"></div></div>
+<div class="day season-current today"><div class="day-num">13</div><div class="day-count">D56</div><div class="dots"></div></div>
+<div class="day season-current event-day" data-day="57"><div class="day-num">14</div><div class="day-count">D57</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">15</div><div class="day-count">D58</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">16</div><div class="day-count">D59</div><div class="dots"></div></div>
+<div class="day season-current dungeon-day" data-day="60"><div class="day-num">17</div><div class="day-count">D60</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Warlord's Rest</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">3.55M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">5.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">6.00M</span></div></div></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">18</div><div class="day-count">D61</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">19</div><div class="day-count">D62</div><div class="dots"></div></div>
+<div class="day season-current event-day" data-day="63"><div class="day-num">20</div><div class="day-count">D63</div><div class="dots"><span class="dot-wrap"><span class="dot dot-visage"></span><div class="dot-tooltip"><div class="item item-visage"><div class="item-header"><span class="item-tag">Visage</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bamboo Breeze</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current event-day" data-day="64"><div class="day-num">21</div><div class="day-count">D64</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box – Loong Haven</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">22</div><div class="day-count">D65</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">23</div><div class="day-count">D66</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">24</div><div class="day-count">D67</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">25</div><div class="day-count">D68</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">26</div><div class="day-count">D69</div><div class="dots"></div></div>
+<div class="day season-current event-day" data-day="70"><div class="day-num">27</div><div class="day-count">D70</div><div class="dots"><span class="dot-wrap"><span class="dot dot-collab"></span><div class="dot-tooltip"><div class="item item-collab"><div class="item-header"><span class="item-tag">Collab</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Luo Tianyi Collab - Dimensional Resonance!</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current major-day" data-day="71"><div class="day-num">28</div><div class="day-count">D71</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Seasonal Map: The Tower of Babel</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Fenneck's Puzzle</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other"><div class="item-header"><span class="item-tag">Other</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">New Skill Chroma</div><div class="item-line">Primal Quartet Event</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">29</div><div class="day-count">D72</div><div class="dots"></div></div>
+<div class="day season-current dungeon-day" data-day="73"><div class="day-num">30</div><div class="day-count">D73</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Cloudcrest Temple</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">6.20M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">7.70M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">9.80M</span></div></div></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">31</div><div class="day-count">D74</div><div class="dots"></div></div>
 <div class="day empty"></div>
-</div>
-<div class="month-label">August 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">August 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
@@ -510,83 +978,83 @@
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-<div class="day"><div class="day-num">1</div><div class="day-count">D75</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">2</div><div class="day-count">D76</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">3</div><div class="day-count">D77</div><div class="dots"></div></div>
-<div class="day major-day" data-day="78"><div class="day-num">4</div><div class="day-count">D78</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(4th Job Skill Fragment x180)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Loong Haven II - Relics Release</div></div></span></div></div>
-<div class="day"><div class="day-num">5</div><div class="day-count">D79</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">6</div><div class="day-count">D80</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">7</div><div class="day-count">D81</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">8</div><div class="day-count">D82</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">9</div><div class="day-count">D83</div><div class="dots"></div></div>
-<div class="day event-day" data-day="84"><div class="day-num">10</div><div class="day-count">D84</div><div class="dots"><span class="dot-wrap"><span class="dot dot-visage"></span><div class="dot-tooltip"><div class="item item-visage"><span class="item-tag">Visage</span>Ashen Galaxy</div></div></span></div></div>
-<div class="day event-day" data-day="85"><div class="day-num">11</div><div class="day-count">D85</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
-<div class="day dungeon-day" data-day="86"><div class="day-num">12</div><div class="day-count">D86</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Bladeshire</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">10M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">12.5M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">15.8M</span></div></div></div></div></span></div></div>
-<div class="day"><div class="day-num">13</div><div class="day-count">D87</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">14</div><div class="day-count">D88</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">15</div><div class="day-count">D89</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">16</div><div class="day-count">D90</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">17</div><div class="day-count">D91</div><div class="dots"></div></div>
-<div class="day major-day" data-day="92"><div class="day-num">18</div><div class="day-count">D92</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box – Loong Haven II) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Fenneck's Puzzle</div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Mythic Fantomon Release: Pandarial</div></div></span></div></div>
-<div class="day"><div class="day-num">19</div><div class="day-count">D93</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">20</div><div class="day-count">D94</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">21</div><div class="day-count">D95</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">22</div><div class="day-count">D96</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">23</div><div class="day-count">D97</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">24</div><div class="day-count">D98</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="99"><div class="day-num">25</div><div class="day-count">D99</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Celestial Cloudship</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">16.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">20M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">24.5M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">40M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
-<div class="day"><div class="day-num">26</div><div class="day-count">D100</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">27</div><div class="day-count">D101</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">28</div><div class="day-count">D102</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">29</div><div class="day-count">D103</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">30</div><div class="day-count">D104</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">31</div><div class="day-count">D105</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">1</div><div class="day-count">D75</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">2</div><div class="day-count">D76</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">3</div><div class="day-count">D77</div><div class="dots"></div></div>
+<div class="day season-current major-day" data-day="78"><div class="day-num">4</div><div class="day-count">D78</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Loong Haven II - Relics Release</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">4th Job Skill Fragment x180</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">5</div><div class="day-count">D79</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">6</div><div class="day-count">D80</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">7</div><div class="day-count">D81</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">8</div><div class="day-count">D82</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">9</div><div class="day-count">D83</div><div class="dots"></div></div>
+<div class="day season-current event-day" data-day="84"><div class="day-num">10</div><div class="day-count">D84</div><div class="dots"><span class="dot-wrap"><span class="dot dot-visage"></span><div class="dot-tooltip"><div class="item item-visage"><div class="item-header"><span class="item-tag">Visage</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Ashen Galaxy</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current event-day" data-day="85"><div class="day-num">11</div><div class="day-count">D85</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current dungeon-day" data-day="86"><div class="day-num">12</div><div class="day-count">D86</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Bladeshire</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">10.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">12.50M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">15.80M</span></div></div></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">13</div><div class="day-count">D87</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">14</div><div class="day-count">D88</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">15</div><div class="day-count">D89</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">16</div><div class="day-count">D90</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">17</div><div class="day-count">D91</div><div class="dots"></div></div>
+<div class="day season-current major-day" data-day="92"><div class="day-num">18</div><div class="day-count">D92</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Fantomon Release: Pandarial</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box – Loong Haven II</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Fenneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">19</div><div class="day-count">D93</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">20</div><div class="day-count">D94</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">21</div><div class="day-count">D95</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">22</div><div class="day-count">D96</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">23</div><div class="day-count">D97</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">24</div><div class="day-count">D98</div><div class="dots"></div></div>
+<div class="day season-current dungeon-day" data-day="99"><div class="day-num">25</div><div class="day-count">D99</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Celestial Cloudship</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">16.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">20.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">24.50M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">40.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">26</div><div class="day-count">D100</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">27</div><div class="day-count">D101</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">28</div><div class="day-count">D102</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">29</div><div class="day-count">D103</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">30</div><div class="day-count">D104</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">31</div><div class="day-count">D105</div><div class="dots"></div></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-</div>
-<div class="month-label">September 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">September 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-<div class="day event-day" data-day="106"><div class="day-num">1</div><div class="day-count">D106</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(4th Job Skill Fragment x180)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
-<div class="day"><div class="day-num">2</div><div class="day-count">D107</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">3</div><div class="day-count">D108</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">4</div><div class="day-count">D109</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">5</div><div class="day-count">D110</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">6</div><div class="day-count">D111</div><div class="dots"></div></div>
-<div class="day"><div class="day-num">7</div><div class="day-count">D112</div><div class="dots"></div></div>
-<div class="day event-day" data-day="113"><div class="day-num">8</div><div class="day-count">D113</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Fenneck's Puzzle</div></div></span></div></div>
-<div class="day major-day" data-day="114"><div class="day-num">9</div><div class="day-count">D114</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Crystal Spiral Tree</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">—</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Season 3 Start</div><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Aethyris</div><div class="item item-major"><span class="star">&#9733;</span>Class Advancement: 5th Job (Lv. 136)</div></div></span></div></div>
+<div class="day season-current event-day" data-day="106"><div class="day-num">1</div><div class="day-count">D106</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">4th Job Skill Fragment x180</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day season-current"><div class="day-num">2</div><div class="day-count">D107</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">3</div><div class="day-count">D108</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">4</div><div class="day-count">D109</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">5</div><div class="day-count">D110</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">6</div><div class="day-count">D111</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">7</div><div class="day-count">D112</div><div class="dots"></div></div>
+<div class="day season-current event-day" data-day="113"><div class="day-num">8</div><div class="day-count">D113</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Fenneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day major-day" data-day="114"><div class="day-num">9</div><div class="day-count">D114</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Season 3 Start</div><div class="item-line">Kingdom Unlock: Aethyris</div><div class="item-line">Class Advancement: 5th Job (Lv. 136)</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Crystal Spiral Tree</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">—</span></div></div></div></div></div></span></div></div>
 <div class="day"><div class="day-num">10</div><div class="day-count">D115</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">11</div><div class="day-count">D116</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">12</div><div class="day-count">D117</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">13</div><div class="day-count">D118</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">14</div><div class="day-count">D119</div><div class="dots"></div></div>
-<div class="day event-day" data-day="120"><div class="day-num">15</div><div class="day-count">D120</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day event-day" data-day="120"><div class="day-num">15</div><div class="day-count">D120</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">16</div><div class="day-count">D121</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">17</div><div class="day-count">D122</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">18</div><div class="day-count">D123</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">19</div><div class="day-count">D124</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">20</div><div class="day-count">D125</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">21</div><div class="day-count">D126</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="127"><div class="day-num">22</div><div class="day-count">D127</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Eternal Flower Garden - (Lvl 160)</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">12.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">15M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">18M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">28.5M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
-<div class="day event-day" data-day="128"><div class="day-num">23</div><div class="day-count">D128</div><div class="dots"><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other">Seasonal Map: Starry Sea Cruise</div></div></span></div></div>
+<div class="day dungeon-day" data-day="127"><div class="day-num">22</div><div class="day-count">D127</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Eternal Flower Garden</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">12.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">15.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">18.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">28.50M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day event-day" data-day="128"><div class="day-num">23</div><div class="day-count">D128</div><div class="dots"><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other"><div class="item-header"><span class="item-tag">Other</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Seasonal Map: Starry Sea Cruise</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">24</div><div class="day-count">D129</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">25</div><div class="day-count">D130</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">26</div><div class="day-count">D131</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">27</div><div class="day-count">D132</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">28</div><div class="day-count">D133</div><div class="dots"></div></div>
-<div class="day event-day" data-day="134"><div class="day-num">29</div><div class="day-count">D134</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(5th Job Skill Fragment x180) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div></span></div></div>
+<div class="day event-day" data-day="134"><div class="day-num">29</div><div class="day-count">D134</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">5th Job Skill Fragment x180</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">30</div><div class="day-count">D135</div><div class="dots"></div></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-</div>
-<div class="month-label">October 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">October 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
@@ -598,60 +1066,60 @@
 <div class="day"><div class="day-num">3</div><div class="day-count">D138</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">4</div><div class="day-count">D139</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">5</div><div class="day-count">D140</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="141"><div class="day-num">6</div><div class="day-count">D141</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Battle Abyss Fortress</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">20M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">26M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">30M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">46M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem / Philosopher's Stone)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day dungeon-day" data-day="141"><div class="day-num">6</div><div class="day-count">D141</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Battle Abyss Fortress</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">20.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">26.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">30.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">46.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem / Philosopher's Stone</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">7</div><div class="day-count">D142</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">8</div><div class="day-count">D143</div><div class="dots"></div></div>
-<div class="day major-day" data-day="144"><div class="day-num">9</div><div class="day-count">D144</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Aethyris Phase 2 Relics Unlock</div></div></span></div></div>
+<div class="day major-day" data-day="144"><div class="day-num">9</div><div class="day-count">D144</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Aethyris Phase 2 Relics Unlock</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">10</div><div class="day-count">D145</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">11</div><div class="day-count">D146</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">12</div><div class="day-count">D147</div><div class="dots"></div></div>
-<div class="day event-day" data-day="148"><div class="day-num">13</div><div class="day-count">D148</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris II) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
+<div class="day event-day" data-day="148"><div class="day-num">13</div><div class="day-count">D148</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris II</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">14</div><div class="day-count">D149</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">15</div><div class="day-count">D150</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">16</div><div class="day-count">D151</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">17</div><div class="day-count">D152</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">18</div><div class="day-count">D153</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">19</div><div class="day-count">D154</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="155"><div class="day-num">20</div><div class="day-count">D155</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Purification Garden</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">32.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">43M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">50.5M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">75M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div></span></div></div>
+<div class="day dungeon-day" data-day="155"><div class="day-num">20</div><div class="day-count">D155</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Purification Garden</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">32.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">43.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">50.50M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">75.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">21</div><div class="day-count">D156</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">22</div><div class="day-count">D157</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">23</div><div class="day-count">D158</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">24</div><div class="day-count">D159</div><div class="dots"></div></div>
-<div class="day major-day" data-day="160"><div class="day-num">25</div><div class="day-count">D160</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Mythic Fantomon Release: Rainbow Star Spirit</div></div></span></div></div>
+<div class="day major-day" data-day="160"><div class="day-num">25</div><div class="day-count">D160</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Fantomon Release: Rainbow Star Spirit</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">26</div><div class="day-count">D161</div><div class="dots"></div></div>
-<div class="day event-day" data-day="162"><div class="day-num">27</div><div class="day-count">D162</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(5th Job Skill Fragment x180) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day event-day" data-day="162"><div class="day-num">27</div><div class="day-count">D162</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">5th Job Skill Fragment x180</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">28</div><div class="day-count">D163</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">29</div><div class="day-count">D164</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">30</div><div class="day-count">D165</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">31</div><div class="day-count">D166</div><div class="dots"></div></div>
-</div>
-<div class="month-label">November 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">November 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day"><div class="day-num">1</div><div class="day-count">D167</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">2</div><div class="day-count">D168</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="169"><div class="day-num">3</div><div class="day-count">D169</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Order Temple</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">55M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">65M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">82M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">115M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem / Philosopher's Stone)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
+<div class="day dungeon-day" data-day="169"><div class="day-num">3</div><div class="day-count">D169</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Order Temple</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">55.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">65.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">82.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">115.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem / Philosopher's Stone</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">4</div><div class="day-count">D170</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">5</div><div class="day-count">D171</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">6</div><div class="day-count">D172</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">7</div><div class="day-count">D173</div><div class="dots"></div></div>
-<div class="day major-day" data-day="174"><div class="day-num">8</div><div class="day-count">D174</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><span class="star">&#9733;</span>Aethyris Phase 3 Relics Unlock</div></div></span></div></div>
+<div class="day major-day" data-day="174"><div class="day-num">8</div><div class="day-count">D174</div><div class="dots"><span class="dot-wrap"><span class="dot dot-major"></span><div class="dot-tooltip"><div class="item item-major"><div class="item-header"><span class="item-tag">Major Event</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Aethyris Phase 3 Relics Unlock</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">9</div><div class="day-count">D175</div><div class="dots"></div></div>
-<div class="day event-day" data-day="176"><div class="day-num">10</div><div class="day-count">D176</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris III) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div></span></div></div>
+<div class="day event-day" data-day="176"><div class="day-num">10</div><div class="day-count">D176</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris III</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">11</div><div class="day-count">D177</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">12</div><div class="day-count">D178</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">13</div><div class="day-count">D179</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">14</div><div class="day-count">D180</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">15</div><div class="day-count">D181</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">16</div><div class="day-count">D182</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="183"><div class="day-num">17</div><div class="day-count">D183</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Blazing Sun Spire</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">84.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">100M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">120M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">180M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day dungeon-day" data-day="183"><div class="day-num">17</div><div class="day-count">D183</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Blazing Sun Spire</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">84.50M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">100.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">120.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">180.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">18</div><div class="day-count">D184</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">19</div><div class="day-count">D185</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">20</div><div class="day-count">D186</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">21</div><div class="day-count">D187</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">22</div><div class="day-count">D188</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">23</div><div class="day-count">D189</div><div class="dots"></div></div>
-<div class="day event-day" data-day="190"><div class="day-num">24</div><div class="day-count">D190</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(5th Job Skill Fragment x180) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
+<div class="day event-day" data-day="190"><div class="day-num">24</div><div class="day-count">D190</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">5th Job Skill Fragment x180</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">25</div><div class="day-count">D191</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">26</div><div class="day-count">D192</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">27</div><div class="day-count">D193</div><div class="dots"></div></div>
@@ -663,27 +1131,27 @@
 <div class="day empty"></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-</div>
-<div class="month-label">December 2026</div>
+</div></div>
+<div class="month-block"><div class="month-label">December 2026</div>
 <div class="grid">
 <div class="dow">Sun</div><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div>
 <div class="day empty"></div>
 <div class="day empty"></div>
-<div class="day dungeon-day" data-day="197"><div class="day-num">1</div><div class="day-count">D197</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Sovereign's Nest</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">125M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">145M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">180M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">250M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem / Philosopher's Stone)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div></span></div></div>
+<div class="day dungeon-day" data-day="197"><div class="day-num">1</div><div class="day-count">D197</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Sovereign's Nest</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">125.00M</span><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">145.00M</span><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">180.00M</span><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">250.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem / Philosopher's Stone</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Feneck's Puzzle</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">2</div><div class="day-count">D198</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">3</div><div class="day-count">D199</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">4</div><div class="day-count">D200</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">5</div><div class="day-count">D201</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">6</div><div class="day-count">D202</div><div class="dots"></div></div>
-<div class="day dungeon-day" data-day="203"><div class="day-num">7</div><div class="day-count">D203</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Sovereign's Nest</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Abyss</span><span class="tier-dash">—</span><span class="tier-val">350M</span></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other">Final Power Wall</div></div></span></div></div>
-<div class="day event-day" data-day="204"><div class="day-num">8</div><div class="day-count">D204</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris III) [choice]</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div></span></div></div>
+<div class="day dungeon-day" data-day="203"><div class="day-num">7</div><div class="day-count">D203</div><div class="dots"><span class="dot-wrap"><span class="dot dot-dungeon"></span><div class="dot-tooltip"><div class="item item-dungeon"><div class="item-header"><span class="item-tag">Dungeon</span></div><div class="item-sep"></div><div class="item-info"><div class="dungeon-block"><div class="dungeon-name">Sovereign's Nest</div><div class="item-sep"></div><div class="tier-list"><span class="tier-name">Abyss</span><span class="tier-dash">—</span><span class="tier-val">350.00M</span></div></div></div></div></div></span><span class="dot-wrap"><span class="dot dot-other"></span><div class="dot-tooltip"><div class="item item-other"><div class="item-header"><span class="item-tag">Other</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Final Power Wall</div></div><div class="item-sep"></div></div></div></span></div></div>
+<div class="day event-day" data-day="204"><div class="day-num">8</div><div class="day-count">D204</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box - Aethyris III</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">9</div><div class="day-count">D205</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">10</div><div class="day-count">D206</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">11</div><div class="day-count">D207</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">12</div><div class="day-count">D208</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">13</div><div class="day-count">D209</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">14</div><div class="day-count">D210</div><div class="dots"></div></div>
-<div class="day event-day" data-day="211"><div class="day-num">15</div><div class="day-count">D211</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div></span></div></div>
+<div class="day event-day" data-day="211"><div class="day-num">15</div><div class="day-count">D211</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Statue / Golden Divine Tree</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day"><div class="day-num">16</div><div class="day-count">D212</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">17</div><div class="day-count">D213</div><div class="dots"></div></div>
 <div class="day"><div class="day-num">18</div><div class="day-count">D214</div><div class="dots"></div></div>
@@ -702,224 +1170,21 @@
 <div class="day"><div class="day-num">31</div><div class="day-count">D227</div><div class="dots"></div></div>
 <div class="day empty"></div>
 <div class="day empty"></div>
+</div></div>
 </div>
 
-
-    <div class="legend">
-      <div class="legend-item"><div class="swatch sw-today"></div>Today</div>
-      <div class="legend-item"><div class="swatch sw-dungeon"></div>Dungeon</div>
-      <div class="legend-item"><div class="swatch sw-gth"></div>Grand Treasure Hunt</div>
-      <div class="legend-item"><div class="swatch sw-mini"></div>Mini game</div>
-      <div class="legend-item"><div class="swatch sw-collab"></div>Collaboration</div>
-      <div class="legend-item"><div class="swatch sw-visage"></div>Visage</div>
-      <div class="legend-item"><div class="swatch sw-other"></div>Other</div>
-      <div class="legend-item"><div class="swatch sw-major"></div>Major event</div>
+      <div class="legend">
+        <div class="legend-title">Key</div>
+        <div class="legend-item"><div class="swatch sw-today"></div>Today</div>
+        <div class="legend-item"><div class="swatch sw-major"></div>Major Event</div>
+        <div class="legend-item"><div class="swatch sw-dungeon"></div>Dungeon</div>
+        <div class="legend-item"><div class="swatch sw-gth"></div>Grand Treasure Hunt</div>
+        <div class="legend-item"><div class="swatch sw-mini"></div>Mini Game</div>
+        <div class="legend-item"><div class="swatch sw-collab"></div>Collaboration</div>
+        <div class="legend-item"><div class="swatch sw-visage"></div>Visage</div>
+        <div class="legend-item"><div class="swatch sw-other"></div>Other</div>
+      </div>
     </div>
-
-    
-    <details class="season-group" >
-      <summary>Launch Window & Season 1 — Verdantglade / Cinder Ridge / Aqualis</summary>
-      <div class="details">
-      <div class="detail-row major" id="detail-1">
-        <div class="detail-date">May 19 · Tue<br><span class="day-tag">Day 1</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Verdantglade</div><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Auroradrasil</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">36K</span></div></div></div></div>
-      </div>
-      <div class="detail-row major" id="detail-4">
-        <div class="detail-date">May 22 · Fri<br><span class="day-tag">Day 4</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Cinder Ridge</div><div class="item item-major"><span class="star">&#9733;</span>Class Advancement: 2nd Job (Lv. 44)</div><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Mecha Summit</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">180K</span></div></div></div></div>
-      </div>
-      <div class="detail-row" id="detail-8">
-        <div class="detail-date">May 26 · Tue<br><span class="day-tag">Day 8</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Cinder Ridge) [choice]</div></div>
-      </div>
-      <div class="detail-row major" id="detail-12">
-        <div class="detail-date">May 30 · Sat<br><span class="day-tag">Day 12</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Season 1 Start</div><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Aqualis</div><div class="item item-major"><span class="star">&#9733;</span>Class Advancement: 3rd Job (Lv. 82)</div><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Ocean Palace Ruins</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">580K</span></div></div></div></div>
-      </div>
-      <div class="detail-row" id="detail-15">
-        <div class="detail-date">Jun 2 · Tue<br><span class="day-tag">Day 15</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row" id="detail-22">
-        <div class="detail-date">Jun 9 · Tue<br><span class="day-tag">Day 22</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(3rd Job Skill Fragment x180) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-24">
-        <div class="detail-date">Jun 11 · Thu<br><span class="day-tag">Day 24</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Aquaorigin Shrine - (Lvl 100)</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">930K</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">1.45M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">2.05M</span></div></div></div></div>
-      </div>
-      <div class="detail-row" id="detail-26">
-        <div class="detail-date">Jun 13 · Sat<br><span class="day-tag">Day 26</span></div>
-        <div class="detail-items"><div class="item item-other">Seasonal Map: Whaleback Island</div></div>
-      </div>
-      <div class="detail-row" id="detail-29">
-        <div class="detail-date">Jun 16 · Tue<br><span class="day-tag">Day 29</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-33">
-        <div class="detail-date">Jun 20 · Sat<br><span class="day-tag">Day 33</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Hellhold</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">2.25M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">2.75M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">3.9M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">6.2M</span></div></div></div></div>
-      </div>
-      <div class="detail-row" id="detail-36">
-        <div class="detail-date">Jun 23 · Tue<br><span class="day-tag">Day 36</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aqualis) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row" id="detail-43">
-        <div class="detail-date">Jun 30 · Tue<br><span class="day-tag">Day 43</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      </div>
-    </details>
-    <details class="season-group" open>
-      <summary>Season 2 — Loong Haven</summary>
-      <div class="details">
-      <div class="detail-row" id="detail-57">
-        <div class="detail-date">Jul 14 · Tue<br><span class="day-tag">Day 57</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-60">
-        <div class="detail-date">Jul 17 · Fri<br><span class="day-tag">Day 60</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Warlord's Rest - (Lvl 130)</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">3.55M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">5M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">6M</span></div></div></div></div>
-      </div>
-      <div class="detail-row" id="detail-63">
-        <div class="detail-date">Jul 20 · Mon<br><span class="day-tag">Day 63</span></div>
-        <div class="detail-items"><div class="item item-visage"><span class="item-tag">Visage</span>Bamboo Breeze</div></div>
-      </div>
-      <div class="detail-row" id="detail-64">
-        <div class="detail-date">Jul 21 · Tue<br><span class="day-tag">Day 64</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box – Loong Haven) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row" id="detail-70">
-        <div class="detail-date">Jul 27 · Mon<br><span class="day-tag">Day 70</span></div>
-        <div class="detail-items"><div class="item item-collab"><span class="item-tag">Collaboration</span>Luo Tianyi Collab - Dimensional Resonance!</div></div>
-      </div>
-      <div class="detail-row major" id="detail-71">
-        <div class="detail-date">Jul 28 · Tue<br><span class="day-tag">Day 71</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Seasonal Map: The Tower of Babel</div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Fenneck's Puzzle</div><div class="item item-other">New Skill Chroma</div><div class="item item-other">Primal Quartet Event</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-73">
-        <div class="detail-date">Jul 30 · Thu<br><span class="day-tag">Day 73</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Cloudcrest Temple</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">6.2M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">7.7M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">9.8M</span></div></div></div></div>
-      </div>
-      <div class="detail-row major" id="detail-78">
-        <div class="detail-date">Aug 4 · Tue<br><span class="day-tag">Day 78</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Loong Haven II - Relics Release</div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(4th Job Skill Fragment x180)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row" id="detail-84">
-        <div class="detail-date">Aug 10 · Mon<br><span class="day-tag">Day 84</span></div>
-        <div class="detail-items"><div class="item item-visage"><span class="item-tag">Visage</span>Ashen Galaxy</div></div>
-      </div>
-      <div class="detail-row" id="detail-85">
-        <div class="detail-date">Aug 11 · Tue<br><span class="day-tag">Day 85</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-86">
-        <div class="detail-date">Aug 12 · Wed<br><span class="day-tag">Day 86</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Bladeshire</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">10M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">12.5M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">15.8M</span></div></div></div></div>
-      </div>
-      <div class="detail-row major" id="detail-92">
-        <div class="detail-date">Aug 18 · Tue<br><span class="day-tag">Day 92</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Mythic Fantomon Release: Pandarial</div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box – Loong Haven II) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Fenneck's Puzzle</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-99">
-        <div class="detail-date">Aug 25 · Tue<br><span class="day-tag">Day 99</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Celestial Cloudship</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">16.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">20M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">24.5M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">40M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row" id="detail-106">
-        <div class="detail-date">Sep 1 · Tue<br><span class="day-tag">Day 106</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(4th Job Skill Fragment x180)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row" id="detail-113">
-        <div class="detail-date">Sep 8 · Tue<br><span class="day-tag">Day 113</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Fenneck's Puzzle</div></div>
-      </div>
-      </div>
-    </details>
-    <details class="season-group" >
-      <summary>Season 3 — Aethyris</summary>
-      <div class="details">
-      <div class="detail-row major" id="detail-114">
-        <div class="detail-date">Sep 9 · Wed<br><span class="day-tag">Day 114</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Season 3 Start</div><div class="item item-major"><span class="star">&#9733;</span>Kingdom Unlock: Aethyris</div><div class="item item-major"><span class="star">&#9733;</span>Class Advancement: 5th Job (Lv. 136)</div><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Crystal Spiral Tree</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">—</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">—</span></div></div></div></div>
-      </div>
-      <div class="detail-row" id="detail-120">
-        <div class="detail-date">Sep 15 · Tue<br><span class="day-tag">Day 120</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-127">
-        <div class="detail-date">Sep 22 · Tue<br><span class="day-tag">Day 127</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Eternal Flower Garden - (Lvl 160)</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">12.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">15M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">18M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">28.5M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row" id="detail-128">
-        <div class="detail-date">Sep 23 · Wed<br><span class="day-tag">Day 128</span></div>
-        <div class="detail-items"><div class="item item-other">Seasonal Map: Starry Sea Cruise</div></div>
-      </div>
-      <div class="detail-row" id="detail-134">
-        <div class="detail-date">Sep 29 · Tue<br><span class="day-tag">Day 134</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(5th Job Skill Fragment x180) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-141">
-        <div class="detail-date">Oct 6 · Tue<br><span class="day-tag">Day 141</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Battle Abyss Fortress</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">20M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">26M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">30M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">46M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem / Philosopher's Stone)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row major" id="detail-144">
-        <div class="detail-date">Oct 9 · Fri<br><span class="day-tag">Day 144</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Aethyris Phase 2 Relics Unlock</div></div>
-      </div>
-      <div class="detail-row" id="detail-148">
-        <div class="detail-date">Oct 13 · Tue<br><span class="day-tag">Day 148</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris II) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-155">
-        <div class="detail-date">Oct 20 · Tue<br><span class="day-tag">Day 155</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Purification Garden</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">32.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">43M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">50.5M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">75M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div>
-      </div>
-      <div class="detail-row major" id="detail-160">
-        <div class="detail-date">Oct 25 · Sun<br><span class="day-tag">Day 160</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Mythic Fantomon Release: Rainbow Star Spirit</div></div>
-      </div>
-      <div class="detail-row" id="detail-162">
-        <div class="detail-date">Oct 27 · Tue<br><span class="day-tag">Day 162</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(5th Job Skill Fragment x180) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-169">
-        <div class="detail-date">Nov 3 · Tue<br><span class="day-tag">Day 169</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Order Temple</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">55M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">65M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">82M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">115M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem / Philosopher's Stone)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row major" id="detail-174">
-        <div class="detail-date">Nov 8 · Sun<br><span class="day-tag">Day 174</span></div>
-        <div class="detail-items"><div class="item item-major"><span class="star">&#9733;</span>Aethyris Phase 3 Relics Unlock</div></div>
-      </div>
-      <div class="detail-row" id="detail-176">
-        <div class="detail-date">Nov 10 · Tue<br><span class="day-tag">Day 176</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris III) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-183">
-        <div class="detail-date">Nov 17 · Tue<br><span class="day-tag">Day 183</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Blazing Sun Spire</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">84.5M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">100M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">120M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">180M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row" id="detail-190">
-        <div class="detail-date">Nov 24 · Tue<br><span class="day-tag">Day 190</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(5th Job Skill Fragment x180) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-197">
-        <div class="detail-date">Dec 1 · Tue<br><span class="day-tag">Day 197</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Sovereign's Nest</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Normal</span><span class="tier-dash">—</span><span class="tier-val">125M</span></div><div class="tier-row"><span class="tier-name">Hard</span><span class="tier-dash">—</span><span class="tier-val">145M</span></div><div class="tier-row"><span class="tier-name">Nightmare</span><span class="tier-dash">—</span><span class="tier-val">180M</span></div><div class="tier-row"><span class="tier-name">Inferno</span><span class="tier-dash">—</span><span class="tier-val">250M</span></div></div></div><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Primal Gem / Philosopher's Stone)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Feneck's Puzzle</div></div>
-      </div>
-      <div class="detail-row dungeon-tier" id="detail-203">
-        <div class="detail-date">Dec 7 · Mon<br><span class="day-tag">Day 203</span></div>
-        <div class="detail-items"><div class="item item-dungeon"><div class="dungeon-title"><span class="sword">&#9876;&#xFE0E;</span><span class="item-tag">Dungeon</span>Sovereign's Nest</div><div class="tier-list"><div class="tier-row"><span class="tier-name">Abyss</span><span class="tier-dash">—</span><span class="tier-val">350M</span></div></div></div><div class="item item-other">Final Power Wall</div></div>
-      </div>
-      <div class="detail-row" id="detail-204">
-        <div class="detail-date">Dec 8 · Tue<br><span class="day-tag">Day 204</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Mythic Relic Box - Aethyris III) [choice]</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Bingo Draw</div></div>
-      </div>
-      <div class="detail-row" id="detail-211">
-        <div class="detail-date">Dec 15 · Tue<br><span class="day-tag">Day 211</span></div>
-        <div class="detail-items"><div class="item item-gth"><span class="item-tag">Grand Treasure Hunt</span>(Lucky Statue / Golden Divine Tree)</div><div class="item item-mini"><span class="item-tag">Mini Game</span>Lucky Scratch</div></div>
-      </div>
-      </div>
-    </details>
 
   </div>
 
