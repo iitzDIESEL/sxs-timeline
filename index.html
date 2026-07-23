@@ -9,7 +9,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #0a0d12;
+    background: #14171D;
     font-family: 'Space Grotesk', sans-serif;
     padding: 0;
   }
@@ -19,7 +19,7 @@
     max-width: 1800px;
     margin: 0 auto;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #0e1218 0%, #0a0d12 100%);
+    background: linear-gradient(180deg, #191D24 0%, #14171D 100%);
     padding: 44px clamp(16px, 2vw, 36px) 56px;
     position: relative;
     min-height: 100vh;
@@ -30,12 +30,12 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #0f6e56, #0c447c 50%, #712b13);
+    background: linear-gradient(90deg, #1B3A56, #4C8FD8 50%, #712b13);
     opacity: 0.7;
   }
 
   .eyebrow {
-    color: #5f9ea8;
+    color: #63B8F5;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     letter-spacing: 4px;
@@ -44,13 +44,13 @@
   }
 
   h1 {
-    color: #eef2f5;
+    color: #F8FAFC;
     font-size: clamp(26px, 3vw, 38px);
     font-weight: 700;
     letter-spacing: 0.2px;
   }
 
-  h1 span { color: #4fa39a; font-weight: 500; }
+  h1 span { color: #63B8F5; font-weight: 500; }
 
   .subtitle {
     color: #6b7a88;
@@ -60,7 +60,7 @@
   }
 
   .disclaimer {
-    color: #55636f;
+    color: #576574;
     font-size: 12px;
     margin-top: 6px;
     font-style: italic;
@@ -73,18 +73,18 @@
     gap: 8px;
     margin-top: 14px;
     padding: 6px 14px;
-    border: 1px solid #3a5a52;
-    background: rgba(79,163,154,0.08);
+    border: 1px solid #2E5C82;
+    background: rgba(99,184,245,0.08);
     border-radius: 20px;
     font-size: 12.5px;
-    color: #a8dcd4;
+    color: #9AD3FA;
     font-family: 'IBM Plex Mono', monospace;
   }
 
   .season-badge-dot {
     width: 7px; height: 7px; border-radius: 50%;
-    background: #4fa39a;
-    box-shadow: 0 0 6px rgba(79,163,154,0.8);
+    background: #63B8F5;
+    box-shadow: 0 0 6px rgba(99,184,245,0.8);
     flex-shrink: 0;
   }
 
@@ -97,20 +97,20 @@
   }
 
   .month-block {
-    background: #0d1117;
-    border: 1px solid #1a232d;
+    background: #1B1F26;
+    border: 1px solid #262B33;
     border-radius: 8px;
     padding: 20px 22px 22px;
   }
 
   .month-label {
     margin-top: 0;
-    color: #8a99a8;
+    color: #9DAAB5;
     font-size: 12px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     font-family: 'IBM Plex Mono', monospace;
-    border-bottom: 1px solid #1c2733;
+    border-bottom: 1px solid #2A2F38;
     padding-bottom: 12px;
   }
 
@@ -123,7 +123,7 @@
 
   .dow {
     text-align: center;
-    color: #45525f;
+    color: #576574;
     font-size: 11px;
     font-family: 'IBM Plex Mono', monospace;
     letter-spacing: 1px;
@@ -132,9 +132,9 @@
 
   .day {
     height: 62px;
-    border: 1px solid #182029;
+    border: 1px solid #23272F;
     border-radius: 3px;
-    background: #0d1117;
+    background: #1B1F26;
     padding: 5px 6px;
     position: relative;
     z-index: 1;
@@ -146,23 +146,23 @@
 
   .day.empty { border: none; background: transparent; }
 
-  .day.season-current { border-color: #3a5a52; background: rgba(79,163,154,0.07); }
+  .day.season-current { border-color: #2E5C82; background: rgba(99,184,245,0.07); }
 
   .day-num {
-    color: #4a5764;
+    color: #6B7684;
     font-size: 12px;
     font-family: 'IBM Plex Mono', monospace;
   }
 
   .day-count {
-    color: #2e3742;
+    color: #3D434D;
     font-size: 8px;
     font-family: 'IBM Plex Mono', monospace;
     margin-top: 1px;
   }
 
-  .day.today { border-color: #4fa39a; box-shadow: inset 0 0 0 1px #4fa39a; }
-  .day.today .day-num { color: #7fd4c8; font-weight: 500; }
+  .day.today { border-color: #63B8F5; box-shadow: inset 0 0 0 1px #63B8F5; }
+  .day.today .day-num { color: #B9E3FC; font-weight: 500; }
 
   .dots {
     position: absolute;
@@ -192,8 +192,8 @@
     bottom: 130%;
     left: 50%;
     transform: translateX(-50%);
-    background: #0d1117;
-    border: 1px solid #2a3644;
+    background: #1B1F26;
+    border: 1px solid #363C47;
     border-radius: 4px;
     padding: 10px 12px;
     width: max-content;
@@ -235,12 +235,12 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    border: 1px solid #1c2733;
+    border: 1px solid #2A2F38;
     border-radius: 8px;
     padding: 18px 18px;
     position: sticky;
     top: 20px;
-    background: #0d1117;
+    background: #1B1F26;
   }
 
   .legend-title {
@@ -250,7 +250,7 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     padding-bottom: 8px;
-    border-bottom: 1px solid #1c2733;
+    border-bottom: 1px solid #2A2F38;
     margin-bottom: 2px;
   }
 
@@ -259,11 +259,11 @@
     align-items: center;
     gap: 7px;
     font-size: 12px;
-    color: #97a4b0;
+    color: #9DAAB5;
   }
 
   .swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-  .sw-today { background: transparent; border: 1.5px solid #4fa39a; border-radius: 2px; }
+  .sw-today { background: transparent; border: 1.5px solid #63B8F5; border-radius: 2px; }
   .sw-dungeon { background: #d85a30; }
   .sw-gth { background: #5cbf7a; }
   .sw-mini { background: #45b8d4; }
@@ -291,7 +291,7 @@
   .detail-row {
     display: flex;
     gap: 16px;
-    border-left: 2px solid #23303d;
+    border-left: 2px solid #333A45;
     padding-left: 14px;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -311,7 +311,7 @@
     line-height: 1.5;
   }
 
-  .day-tag { color: #45525f; }
+  .day-tag { color: #576574; }
 
   .detail-items {
     display: flex;
@@ -323,7 +323,7 @@
 
   .item {
     font-size: 13px;
-    color: #cdd6de;
+    color: #DCE5ED;
     display: flex;
     gap: 10px;
     align-items: center;
@@ -435,7 +435,7 @@
   }
 
   .item-sep {
-    border-bottom: 1px solid #1c2733;
+    border-bottom: 1px solid #2A2F38;
     margin: 6px 0;
   }
 
@@ -561,7 +561,7 @@
   .item-mini .item-tag { background: rgba(127,179,182,0.15); color: #9fc9cb; }
   .item-collab .item-tag { background: rgba(216,104,168,0.15); color: #e79fc4; }
   .item-visage .item-tag { background: rgba(91,127,212,0.15); color: #9fb1ea; }
-  .item-other { color: #8a99a8; font-size: 12.5px; }
+  .item-other { color: #9DAAB5; font-size: 12.5px; }
   .item-other .item-tag { background: rgba(107,122,136,0.18); color: #a9b4bd; }
 
   .item-major {
@@ -573,7 +573,7 @@
 
   .season-group {
     margin-top: 0;
-    border: 1px solid #1c2733;
+    border: 1px solid #2A2F38;
     border-radius: 4px;
     overflow: hidden;
   }
@@ -581,8 +581,8 @@
     list-style: none;
     cursor: pointer;
     padding: 12px 16px;
-    background: #10151c;
-    color: #cdd6de;
+    background: #14171D;
+    color: #DCE5ED;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12.5px;
     letter-spacing: 1px;
@@ -595,12 +595,12 @@
   .season-group summary::-webkit-details-marker { display: none; }
   .season-group summary::after {
     content: "▾";
-    color: #4fa39a;
+    color: #63B8F5;
     transition: transform 0.15s ease;
     font-size: 11px;
   }
   .season-group:not([open]) summary::after { transform: rotate(-90deg); }
-  .season-group summary:hover { background: #141a22; }
+  .season-group summary:hover { background: #1B1F26; }
   .season-group .details { padding: 16px; margin-top: 0; }
 
   .detail-row { scroll-margin-top: 70px; }
@@ -608,7 +608,7 @@
     animation: jumpFlash 1.4s ease;
   }
   @keyframes jumpFlash {
-    0% { box-shadow: 0 0 0 1px #4fa39a, 0 0 16px rgba(79,163,154,0.5); }
+    0% { box-shadow: 0 0 0 1px #63B8F5, 0 0 16px rgba(99,184,245,0.5); }
     100% { box-shadow: none; }
   }
 
@@ -948,7 +948,7 @@
 <div class="day season-current"><div class="day-num">10</div><div class="day-count">D53</div><div class="dots"></div></div>
 <div class="day season-current"><div class="day-num">11</div><div class="day-count">D54</div><div class="dots"></div></div>
 <div class="day season-current"><div class="day-num">12</div><div class="day-count">D55</div><div class="dots"></div></div>
-<div class="day season-current today"><div class="day-num">13</div><div class="day-count">D56</div><div class="dots"></div></div>
+<div class="day season-current"><div class="day-num">13</div><div class="day-count">D56</div><div class="dots"></div></div>
 <div class="day season-current event-day" data-day="57"><div class="day-num">14</div><div class="day-count">D57</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Primal Gem</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bingo Draw</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day season-current"><div class="day-num">15</div><div class="day-count">D58</div><div class="dots"></div></div>
 <div class="day season-current"><div class="day-num">16</div><div class="day-count">D59</div><div class="dots"></div></div>
@@ -957,7 +957,7 @@
 <div class="day season-current"><div class="day-num">19</div><div class="day-count">D62</div><div class="dots"></div></div>
 <div class="day season-current event-day" data-day="63"><div class="day-num">20</div><div class="day-count">D63</div><div class="dots"><span class="dot-wrap"><span class="dot dot-visage"></span><div class="dot-tooltip"><div class="item item-visage"><div class="item-header"><span class="item-tag">Visage</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Bamboo Breeze</div></div><div class="item-sep"></div></div></div></span></div></div>
 <div class="day season-current event-day" data-day="64"><div class="day-num">21</div><div class="day-count">D64</div><div class="dots"><span class="dot-wrap"><span class="dot dot-gth"></span><div class="dot-tooltip"><div class="item item-gth"><div class="item-header"><span class="item-tag">Grand Treasure Hunt</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Mythic Relic Box – Loong Haven</div></div><div class="item-sep"></div></div></div></span><span class="dot-wrap"><span class="dot dot-mini"></span><div class="dot-tooltip"><div class="item item-mini"><div class="item-header"><span class="item-tag">Mini Game</span></div><div class="item-sep"></div><div class="item-info"><div class="item-line">Lucky Scratch</div></div><div class="item-sep"></div></div></div></span></div></div>
-<div class="day season-current"><div class="day-num">22</div><div class="day-count">D65</div><div class="dots"></div></div>
+<div class="day season-current today"><div class="day-num">22</div><div class="day-count">D65</div><div class="dots"></div></div>
 <div class="day season-current"><div class="day-num">23</div><div class="day-count">D66</div><div class="dots"></div></div>
 <div class="day season-current"><div class="day-num">24</div><div class="day-count">D67</div><div class="dots"></div></div>
 <div class="day season-current"><div class="day-num">25</div><div class="day-count">D68</div><div class="dots"></div></div>
